@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/priorityQueue" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/queue" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/list" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/sorting" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/stack" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/dictionary" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/graph" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/heap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/unionFind" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph/tree" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
+  </component>
+</module>
