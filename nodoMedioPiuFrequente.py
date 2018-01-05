@@ -1,9 +1,5 @@
 from graph.Graph_AdjacencyList import GraphAdjacencyList as Graph
 from queue.Queue import CodaArrayList_deque as Queue
-from tree.treeArrayList import TreeArrayList as Tree
-from tree.treeArrayList import TreeArrayListNode as TreeNode
-from stack.Stack import PilaArrayList
-
 
 def maggiorNodoMedio():
     """
@@ -46,10 +42,9 @@ def maggiorNodoMedio():
         print("BFS with root {}: {}".format(node.id,
                                             [str(item) for item in s]))
 
-    visited = bfs_dist(graph, 6)
-    stampa(visited)
+    bfs_dist(graph, 6)
 
-def bfs_dist(G, rootId): # TODO albero restituito cosa contiene?
+def bfs_dist(G, rootId):
     """
         Execute a Breadth-First Search (BFS) in the graph starting from the
         specified node.
@@ -60,46 +55,53 @@ def bfs_dist(G, rootId): # TODO albero restituito cosa contiene?
     if rootId not in G.nodes:
         return None
 
+    totNodes = G.numNodes()
+
+    # O(n) initialization
+    dist = [float('Inf')] * totNodes
+    prevNode = [-1] * totNodes
+    marked = [False] * totNodes
+
     # BFS nodes initialization
-    bfs_tree = Tree(TreeNode(rootId))
 
     # queue initialization
+    dist[rootId] = 0
+    marked[rootId] = True
     q = Queue()
     q.enqueue(rootId)
 
-    explored = {rootId}  # nodes already explored
 
     while not q.isEmpty():  # while there are nodes to explore ...
         node = q.dequeue()  # get the node from the queue
-        explored.add(node)  # mark the node as explored
         # add all adjacent unexplored nodes to the queue
         for adj_node in G.getAdj(node):
-            if adj_node not in explored:
-                treeNode = TreeNode(node)
-                adjTreeNode = TreeNode(adj_node)
-                adjTree = Tree(adjTreeNode)
-                bfs_tree.insert(treeNode, adjTree)
+            if not marked[adj_node]:
+                marked[adj_node] = True
+                dist[adj_node] = dist[node]+1
+                prevNode[adj_node] = node
                 q.enqueue(adj_node)
 
-    return bfs_tree
+    #debug TODO rimuovi
+    act = 5
+    while (act != -1):
+        print("Cammino ", act)
+        act = prevNode[act]
 
 
-def stampa(self):
-        """Permette di stampare l'albero. Per farlo si usa una pila di appoggio"""
-        stack = PilaArrayList()
-        if self.root != None:
-            print("stack push")
-            stack.push([self.root, 0])  # pila di liste di due elementi [il nodo, il livello occupato dal nodo]
-        else:
-            print("Empty tree!")
-        while not stack.isEmpty():
-            current = stack.pop()
-            level = current[1]
-            print("|---" * level + str(current[0].info)) #TODO se stampo un 'current' la print è vuota, altrimenti funziona
+    # Trova l'effettivo elemento medio
+    for node in G.getNodes():
+        print ("analizzo ", node.id, " con distanza ", dist[node.id])
+        if ((dist[node.id]+1)%2) != 1 or dist[node.id] == 0: #TODO correggi questo obbrobrio
+            continue
+        medNode = node.id
+        medDist = dist[node.id] // 2
+        while (medDist != 0):
+            medDist -= 1
+            medNode = prevNode[medNode]
+        print (medNode)
 
-            for son in current[0].sons:
-                if son != None:
-                    stack.push([son, level + 1])
+#def aggiungiNodiMedi(G, dict, )
+
 
 
 if __name__ == "__main__":
