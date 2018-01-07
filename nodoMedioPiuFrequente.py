@@ -42,9 +42,18 @@ def maggiorNodoMedio():
         print("BFS with root {}: {}".format(node.id,
                                             [str(item) for item in s]))
 
-    bfs_dist(graph, 6)
+    result = {}
+    for i in range(0,7):
+        result[i] = 0
 
-def bfs_dist(G, rootId):
+    for i in range(0,7):
+        result = bfs_dist(graph, i, result)
+
+    v = list(result.values())
+    k = list(result.keys())
+    print ("Nodo medio piu frequente: ", k[v.index(max(v))]) #TODO se ci sono piu nodi medi piu frequenti
+
+def bfs_dist(G, rootId, resultReturn):
     """
         Execute a Breadth-First Search (BFS) in the graph starting from the
         specified node.
@@ -84,13 +93,13 @@ def bfs_dist(G, rootId):
     #debug TODO rimuovi
     act = 5
     while (act != -1):
-        print("Cammino ", act)
+       #print("Cammino ", act)
         act = prevNode[act]
 
-
+    print ("NODO ", rootId)
     # Trova l'effettivo elemento medio
     for node in G.getNodes():
-        print ("analizzo ", node.id, " con distanza ", dist[node.id])
+        #print ("analizzo ", node.id, " con distanza ", dist[node.id])
         if ((dist[node.id]+1)%2) != 1 or dist[node.id] == 0: #TODO correggi questo obbrobrio
             continue
         medNode = node.id
@@ -98,8 +107,10 @@ def bfs_dist(G, rootId):
         while (medDist != 0):
             medDist -= 1
             medNode = prevNode[medNode]
-        print (medNode)
+        print(medNode)
+        resultReturn[medNode] += 1
 
+    return resultReturn
 #def aggiungiNodiMedi(G, dict, )
 
 
