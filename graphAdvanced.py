@@ -3,57 +3,56 @@ from queue.Queue import CodaArrayList_deque as Queue
 
 
 class Graph_Advanced(Graph):
-    def maggiorNodoMedio(self):
+    def mostFrequentMediumNodes(self):
         """
             :param G: Grafo non orientato, pesato ed aciclico
             :return: Grafo medio per il maggior numero di nodi
             :rtype: Grafo
         """
-        # Creo il nodo
-
         result = {}
 
         for node in self.getNodes():
-            print("IN CICLO", node.id)
-            result = self.mediumNodesFromNode(node.id, result)
+            result = self.mediumNodesFromSource(node.id, result)
 
-        v = list(result.values())
-        k = list(result.keys())
+        mediumNodes = []
+        maxOccurrences = 0
+        for node, occurr in result.items():
+            if occurr > maxOccurrences:
+                maxOccurrences = occurr
+                mediumNodes = [node]
+            elif occurr == maxOccurrences:
+                mediumNodes.append(node)
 
-        # TODO se ci sono piu nodi medi piu frequenti
-        print("Nodo medio piu frequente: ", k[v.index(max(v))])
-        return k[v.index(max(v))]
+        return mediumNodes
 
 
-    def findDistances(self, rootId):
+    def pathsFromSource(self, startNode):
         """
             Esegue una visita BFS partendo dal grafo specificato tenendo traccia delle distanze
             con ogni altro nodo e del cammino percorso
-            :param rootId: the root node ID (integer).
+            :param rootId: Node, il nodo da cui iniziare l'elaborazione
             :return: the BFS list of nodes.
         """
         # if the root does not exists, return None
-        if rootId not in self.nodes:
+        if startNode not in self.nodes:
             return None
 
-        totNodes = self.numNodes()
-
-        # O(n) initialization
-        dist = [float('Inf')] * totNodes
-        prevNode = [-1] * totNodes
-        marked = [False] * totNodes
-
-        # queue initialization
-        dist[rootId] = 0
-        marked[rootId] = True
+        dist = {}
+        prevNode = {}
+        marked = {}
         q = Queue()
-        q.enqueue(rootId)
+
+        # Inizializzo con il nodo iniziale
+        dist[startNode] = 0
+        marked[startNode] = True
+        q.enqueue(startNode)
 
         while not q.isEmpty():  # while there are nodes to explore ...
+
             node = q.dequeue()  # get the node from the queue
             # add all adjacent unexplored nodes to the queue
             for adj_node in self.getAdj(node):
-                if not marked[adj_node]:
+                if adj_node not in marked:
                     marked[adj_node] = True
                     dist[adj_node] = dist[node] + 1
                     prevNode[adj_node] = node
@@ -68,18 +67,18 @@ class Graph_Advanced(Graph):
         """
         return [dist, prevNode]
 
-    def mediumNodesFromNode(self, rootId, resultReturn):
+    def mediumNodesFromSource(self, startNode, resultReturn):
         """
             Restituisce un Dizionario contenente i nodi equidistanti
             da rootId a qualunque altro nodo del Grafo connesso
-            :param rootId: integer, id del nodo da analizzare
-            :return resultReturn: Dictionary, dove aggiornare i risultati
+            :param startNode: Node, nodo da analizzare
+            :return resultReturn: Dictionary, dove inserire ed aggiornare i risultati
             :rtype Dictionary
         """
         resultReturn = {}
-        paths = self.findDistances(rootId)
+        paths = self.pathsFromSource(startNode)
 
-        # print("NODO ", rootId)
+        print("Nodi medi a partire da ", startNode)
         # Trova l'effettivo elemento medio
         for node in self.getNodes():
             # print ("analizzo ", node.id, " con distanza ", dist[node.id])
@@ -98,46 +97,3 @@ class Graph_Advanced(Graph):
                 resultReturn[medNode] += 1
 
         return resultReturn
-
-
-def inizializzaNodo():
-    graph = Graph_Advanced()
-
-    graph.print()
-
-    # add nodes
-    for i in range(7):
-        node = graph.addNode(i)
-        print("Node inserted:", node)
-
-    graph.print()
-
-    graph.insertEdge(0, 1)
-    graph.insertEdge(1, 0)
-    graph.insertEdge(1, 5)
-    graph.insertEdge(1, 2)
-    graph.insertEdge(2, 1)
-    graph.insertEdge(2, 6)
-    graph.insertEdge(3, 4)
-    graph.insertEdge(4, 3)
-    graph.insertEdge(4, 6)
-    graph.insertEdge(5, 1)
-    graph.insertEdge(6, 2)
-    graph.insertEdge(6, 4)
-
-    graph.print()
-
-    # execute a BFS
-    """
-    for node in graph.getNodes():
-        s = graph.bfs(node.id)
-        print("BFS with root {}: {}".format(node.id,
-                                            [str(item) for item in s]))
-    """
-    return graph
-
-
-if __name__ == "__main__":
-    print("nodo medio")
-    Grafo = inizializzaNodo()
-    Grafo.maggiorNodoMedio()
