@@ -13,6 +13,18 @@ def main():
 
     print("I nodi medi più frequenti per ogni coppia di nodi sono: ", nodes)
 
+
+def codeProfiling():
+
+    graph = demoGraph()
+
+    graph.pathsFromSource(3)
+
+    graph.mediumNodesFromSource(3)
+
+    graph.mostFrequentMediumNodes()
+
+
 def demoGraph():
 
     graph = Graph_Advanced()
@@ -52,3 +64,5 @@ def demoGraph():
 
 if __name__ == "__main__":
     main()
+
+    #codeProfiling()

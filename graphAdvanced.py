@@ -5,15 +5,15 @@ from queue.Queue import CodaArrayList_deque as Queue
 class Graph_Advanced(Graph):
     def mostFrequentMediumNodes(self):
         """
-            :param G: Grafo non orientato, pesato ed aciclico
-            :return: Grafo medio per il maggior numero di nodi
-            :rtype: Grafo
+            :return: Lista di grafi medi per il maggior numero di Nodi
+            :rtype: List of Nodes
         """
         result = {}
 
         for node in self.getNodes():
-            result = self.mediumNodesFromSource(node.id, result)
+            self.mediumNodesFromSource(node.id, result)
 
+        print ("Risultati: ", result.items())
         mediumNodes = []
         maxOccurrences = 0
         for node, occurr in result.items():
@@ -24,6 +24,37 @@ class Graph_Advanced(Graph):
                 mediumNodes.append(node)
 
         return mediumNodes
+
+
+    def mediumNodesFromSource(self, startNode, resultReturn):
+        """
+            Restituisce un Dizionario contenente i nodi equidistanti
+            da rootId a qualunque altro nodo del Grafo connesso
+            :param startNode: Node, nodo da analizzare
+            :return resultReturn: Dictionary, dove inserire ed aggiornare i risultati
+            :rtype Dictionary
+        """
+        paths = self.pathsFromSource(startNode)
+
+        print("Nodi medi a partire da ", startNode)
+        # Trova l'effettivo elemento medio
+        for node in self.getNodes():
+            # print ("analizzo ", node.id, " con distanza ", dist[node.id])
+            if ((paths[0][node.id] + 1) % 2) != 1 or paths[0][node.id] == 0:  # TODO correggi questo obbrobrio
+                continue
+            medNode = node.id
+            medDist = paths[0][node.id] // 2
+            while (medDist != 0):
+                medDist -= 1
+                medNode = paths[1][medNode]
+            print(medNode)
+
+            if not medNode in resultReturn:
+                resultReturn[medNode] = 1
+            else:
+                resultReturn[medNode] += 1
+
+        return resultReturn
 
 
     def pathsFromSource(self, startNode):
@@ -58,42 +89,8 @@ class Graph_Advanced(Graph):
                     prevNode[adj_node] = node
                     q.enqueue(adj_node)
 
-        """
-        # debug TODO rimuovi
-        act = 5
-        while (act != -1):
-            # print("Cammino ", act)
-            act = prevNode[act]
-        """
+        # Debug
+        # print ("Cammini: ", prevNode.items())
+
         return [dist, prevNode]
 
-    def mediumNodesFromSource(self, startNode, resultReturn):
-        """
-            Restituisce un Dizionario contenente i nodi equidistanti
-            da rootId a qualunque altro nodo del Grafo connesso
-            :param startNode: Node, nodo da analizzare
-            :return resultReturn: Dictionary, dove inserire ed aggiornare i risultati
-            :rtype Dictionary
-        """
-        resultReturn = {}
-        paths = self.pathsFromSource(startNode)
-
-        print("Nodi medi a partire da ", startNode)
-        # Trova l'effettivo elemento medio
-        for node in self.getNodes():
-            # print ("analizzo ", node.id, " con distanza ", dist[node.id])
-            if ((paths[0][node.id] + 1) % 2) != 1 or paths[0][node.id] == 0:  # TODO correggi questo obbrobrio
-                continue
-            medNode = node.id
-            medDist = paths[0][node.id] // 2
-            while (medDist != 0):
-                medDist -= 1
-                medNode = paths[1][medNode]
-            print(medNode)
-
-            if not medNode in resultReturn:
-                resultReturn[medNode] = 1
-            else:
-                resultReturn[medNode] += 1
-
-        return resultReturn
