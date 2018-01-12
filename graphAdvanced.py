@@ -13,7 +13,7 @@ class Graph_Advanced(Graph):
         for node in self.getNodes():
             self.mediumNodesFromSource(node.id, result)
 
-        print ("Risultati: ", result.items())
+        #_UNCOMMprint("Risultati: ", result.items())
         mediumNodes = []
         maxOccurrences = 0
         for node, occurr in result.items():
@@ -36,10 +36,10 @@ class Graph_Advanced(Graph):
         """
         paths = self.pathsFromSource(startNode)
 
-        print("Nodi medi a partire da ", startNode)
+        #_UNCOMMprint("Nodi medi a partire da ", startNode)
         # Trova l'effettivo elemento medio
         for node in self.getNodes():
-            # print ("analizzo ", node.id, " con distanza ", dist[node.id])
+            # #_UNCOMMprint("analizzo ", node.id, " con distanza ", dist[node.id])
             if ((paths[0][node.id] + 1) % 2) != 1 or paths[0][node.id] == 0:  # TODO correggi questo obbrobrio
                 continue
             medNode = node.id
@@ -47,7 +47,7 @@ class Graph_Advanced(Graph):
             while (medDist != 0):
                 medDist -= 1
                 medNode = paths[1][medNode]
-            print(medNode)
+            #_UNCOMMprint(medNode)
 
             if not medNode in resultReturn:
                 resultReturn[medNode] = 1
@@ -90,7 +90,7 @@ class Graph_Advanced(Graph):
                     q.enqueue(adj_node)
 
         # Debug
-        # print ("Cammini: ", prevNode.items())
+        # #_UNCOMMprint("Cammini: ", prevNode.items())
 
         return [dist, prevNode]
 

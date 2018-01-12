@@ -1,28 +1,5 @@
 from graphAdvanced import Graph_Advanced
-
-def main():
-    print ("Inizializzo grafico di prova")
-    print ("graph = demoGraph()")
-    graph = demoGraph()
-
-    print ("Grafo creato. Lista di adiacenza: \n ")
-    graph.print()
-
-    print("Calcolo nodi medi piu frequenti: graph.mostFrequentMediumNodes()")
-    nodes = graph.mostFrequentMediumNodes()
-
-    print("I nodi medi più frequenti per ogni coppia di nodi sono: ", nodes)
-
-
-def codeProfiling():
-
-    graph = demoGraph()
-
-    graph.pathsFromSource(3)
-
-    graph.mediumNodesFromSource(3)
-
-    graph.mostFrequentMediumNodes()
+import cProfile, pstats
 
 
 def demoGraph():
@@ -48,7 +25,6 @@ def demoGraph():
     graph.insertEdge(6, 4)
 
 
-
     # execute a BFS
     """
     for node in graph.getNodes():
@@ -60,9 +36,51 @@ def demoGraph():
 
 
 
+def main():
+    print ("Inizializzo grafico di prova")
+    print ("graph = demoGraph()")
+    graph = demoGraph()
+
+    print ("Grafo creato. Lista di adiacenza: \n ")
+    graph.print()
+
+    print("Calcolo nodi medi piu frequenti: graph.mostFrequentMediumNodes()")
+    nodes = graph.mostFrequentMediumNodes()
+
+    print("I nodi medi più frequenti per ogni coppia di nodi sono: ", nodes)
+
+
+graph_cp = demoGraph()
+
+def codeProfiling():
+
+    print("Code Profiling: Analizzo pathsFromSource(3)")
+
+    cProfile.run('graph_cp.pathsFromSource(3)', "output_pathsFS.txt")
+    p = pstats.Stats("output_pathsFS.txt")
+    p.strip_dirs().sort_stats("time").print_stats()
+
+    print("Code Profiling: Analizzo mediumNodesFromSource(3)")
+
+    cProfile.run('graph_cp.mediumNodesFromSource(3, {})', "output_MedNodesFS.txt")
+    p = pstats.Stats("output_MedNodesFS.txt")
+    p.strip_dirs().sort_stats("time").print_stats()
+
+
+    print("Code Profiling: Analizzo mostFrequentMediumNodes()")
+
+    cProfile.run('graph_cp.mostFrequentMediumNodes()', "output_freqMedNodes.txt")
+    p = pstats.Stats("output_freqMedNodes.txt")
+    p.strip_dirs().sort_stats("time").print_stats()
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
-    main()
+    codeProfiling()
 
     #codeProfiling()
