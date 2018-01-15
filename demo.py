@@ -24,7 +24,8 @@ def demoGraph():
     graph.insertEdge(6, 2)
     graph.insertEdge(6, 4)
 
-
+    print ("Grafo creato. Lista di adiacenza:")
+    graph.print()
     # execute a BFS
     """
     for node in graph.getNodes():
@@ -50,13 +51,14 @@ def main():
     print("I nodi medi più frequenti per ogni coppia di nodi sono: ", nodes)
 
 
-graph_cp = demoGraph()
+# Decommenta per code profiling
+#graph_cp = demoGraph()
 
 def codeProfiling():
 
     print("Code Profiling: Analizzo pathsFromSource(3)")
 
-    cProfile.run('graph_cp.pathsFromSource(3)', "output_pathsFS.txt")
+    cProfile.run('graph_cp.pathsFromSource(6)', "output_pathsFS.txt")
     p = pstats.Stats("output_pathsFS.txt")
     p.strip_dirs().sort_stats("time").print_stats()
 
@@ -81,6 +83,6 @@ def codeProfiling():
 
 
 if __name__ == "__main__":
-    codeProfiling()
+    main()
 
     #codeProfiling()

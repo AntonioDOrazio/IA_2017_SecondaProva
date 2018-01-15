@@ -3,17 +3,20 @@ from queue.Queue import CodaArrayList_deque as Queue
 
 
 class Graph_Advanced(Graph):
+
     def mostFrequentMediumNodes(self):
         """
-            :return: Lista di grafi medi per il maggior numero di Nodi
-            :rtype: List of Nodes
+            Analizza il grafo cercando il nodo (o più di uno) medio per il massimo numero di nodi
+            per ogni coppia di nodi nel grafo, restituendo il risultato tramite una lista di nodi
+            :return: Lista di nodi medi per il maggior numero di coppie di nodi
+            :rtype: List
         """
         result = {}
 
         for node in self.getNodes():
             self.mediumNodesFromSource(node.id, result)
 
-        #_UNCOMMprint("Risultati: ", result.items())
+        print("Risultati: ", result.items())
         mediumNodes = []
         maxOccurrences = 0
         for node, occurr in result.items():
@@ -25,7 +28,6 @@ class Graph_Advanced(Graph):
 
         return mediumNodes
 
-
     def mediumNodesFromSource(self, startNode, resultReturn):
         """
             Restituisce un Dizionario contenente i nodi equidistanti
@@ -36,10 +38,11 @@ class Graph_Advanced(Graph):
         """
         paths = self.pathsFromSource(startNode)
 
-        #_UNCOMMprint("Nodi medi a partire da ", startNode)
+        print("Nodi medi a partire da ", startNode)
         # Trova l'effettivo elemento medio
         for node in self.getNodes():
-            # #_UNCOMMprint("analizzo ", node.id, " con distanza ", dist[node.id])
+            # print("analizzo ", node.id, " con distanza ", dist[node.id])
+
             if ((paths[0][node.id] + 1) % 2) != 1 or paths[0][node.id] == 0:  # TODO correggi questo obbrobrio
                 continue
             medNode = node.id
@@ -47,7 +50,7 @@ class Graph_Advanced(Graph):
             while (medDist != 0):
                 medDist -= 1
                 medNode = paths[1][medNode]
-            #_UNCOMMprint(medNode)
+            print(medNode)
 
             if not medNode in resultReturn:
                 resultReturn[medNode] = 1
@@ -56,13 +59,12 @@ class Graph_Advanced(Graph):
 
         return resultReturn
 
-
     def pathsFromSource(self, startNode):
         """
-            Esegue una visita BFS partendo dal grafo specificato tenendo traccia delle distanze
-            con ogni altro nodo e del cammino percorso
-            :param rootId: Node, il nodo da cui iniziare l'elaborazione
-            :return: the BFS list of nodes.
+            Esegue una visita BFS partendo dal nodo specificato tenendo traccia delle distanze
+            tra ogni altro nodo e del cammino percorso
+            :param rootId: Integer, id del nodo da cui iniziare l'elaborazione
+            :return: lista di dizionari. elemento 0: distanze. elemento 1: nodo precedente
         """
         # if the root does not exists, return None
         if startNode not in self.nodes:
@@ -90,7 +92,7 @@ class Graph_Advanced(Graph):
                     q.enqueue(adj_node)
 
         # Debug
-        # #_UNCOMMprint("Cammini: ", prevNode.items())
+        # print("Cammini: ", prevNode.items())
 
         return [dist, prevNode]
 
